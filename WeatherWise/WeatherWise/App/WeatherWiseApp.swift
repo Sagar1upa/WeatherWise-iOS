@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct WeatherWiseApp: App {
-    private let container = AppContainer()
-
+    @State private var container = AppContainer()
+    
     var body: some Scene {
         WindowGroup {
-            Text("WeatherWise")
+            CitySearchView(viewModel: CitySearchViewModel(searchCitiesUseCase: container.searchCitiesUseCase))
         }
     }
 }

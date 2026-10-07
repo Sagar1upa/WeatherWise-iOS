@@ -42,7 +42,9 @@ struct ActivityRecommendationsView: View {
         .navigationTitle(city.name)
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await viewModel.load(for: city)
+            if case .idle = viewModel.state {
+                await viewModel.load(for: city)
+            }
         }
     }
     
@@ -73,6 +75,9 @@ struct ActivityRecommendationsView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .refreshable {
+            await viewModel.retry(for: city)
+        }
     }
     
     private func errorView(_ error: AppError) -> some View {

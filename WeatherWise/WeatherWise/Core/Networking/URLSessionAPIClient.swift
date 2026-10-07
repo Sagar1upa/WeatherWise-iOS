@@ -37,12 +37,13 @@ struct URLSessionAPIClient: APIClient {
                 throw APIError.decodingFailed
             }
         } catch let error as APIError {
+            print("APIError:", error)
             throw error
-            
-        } catch is URLError {
+        } catch let error as URLError {
+            print("URLError:", error.code, error.localizedDescription)
             throw APIError.networkUnavailable
-            
         } catch {
+            print("Unknown API Error:", error)
             throw APIError.requestFailed
         }
     }

@@ -15,7 +15,8 @@ final class ActivityRecommendationsViewModel {
     private let recommendationsUseCase: any GetActivityRecommendationsUseCase
     
     private(set) var state: RecommendationState = .idle
-    
+    private(set) var isRefreshing = false
+
     init(weatherRepository: any WeatherRepository, recommendationsUseCase: any GetActivityRecommendationsUseCase) {
         self.weatherRepository = weatherRepository
         self.recommendationsUseCase = recommendationsUseCase
@@ -35,12 +36,36 @@ final class ActivityRecommendationsViewModel {
             
             state = .loaded(recommendations)
             
+        } catch is CancellationError {
+            return
+            
         } catch {
             state = .failed(AppError(error: error))
         }
     }
     
     func retry(for city: City) async {
-        await load(for: city)
+        isRefreshing = true
+        defer {
+            isRefreshing = false
+        }
+
+        do {
+            let forecast = try await weatherRepository.fetchForecast(latitude: city.latitude, longitude: city.longitude)
+            let recommendations = recommendationsUseCase.execute(forecast: forecast)
+
+            guard !recommendations.isEmpty else {
+                state = .failed(.unknown)
+                return
+            }
+
+            state = .loaded(recommendations)
+            
+        } catch is CancellationError {
+            return
+            
+        } catch {
+            state = .failed(AppError(error: error))
+        }
     }
 }

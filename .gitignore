@@ -1,0 +1,41 @@
+# Xcode
+.DS_Store
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Xcode build products
+DerivedData/
+build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Package manager
+Packages/
+
+# Archives
+*.xcarchive
+
+# Xcode generated files
+*.moved-aside
+*.xccheckout
+
+# Code coverage
+*.xccovarchive
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Temporary files
+*.tmp
+*.swp

@@ -13,7 +13,7 @@ struct WeatherWiseApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CitySearchView(viewModel: CitySearchViewModel(searchCitiesUseCase: container.searchCitiesUseCase))
+            CitySearchView(viewModel: CitySearchViewModel(searchCitiesUseCase: container.searchCitiesUseCase), weatherRepository: container.weatherRepository, recommendationsUseCase: container.activityRecommendationsUseCase)
         }
     }
 }

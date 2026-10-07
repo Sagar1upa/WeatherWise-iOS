@@ -9,10 +9,15 @@ import SwiftUI
 
 struct CitySearchView: View {
     @State private var viewModel: CitySearchViewModel
-    
-    init(viewModel: CitySearchViewModel) {
-        _viewModel = State(initialValue: viewModel)
-    }
+        
+        private let weatherRepository: any WeatherRepository
+        private let recommendationsUseCase: any GetActivityRecommendationsUseCase
+        
+        init(viewModel: CitySearchViewModel, weatherRepository: any WeatherRepository, recommendationsUseCase: any GetActivityRecommendationsUseCase) {
+            _viewModel = State(initialValue: viewModel)
+            self.weatherRepository = weatherRepository
+            self.recommendationsUseCase = recommendationsUseCase
+        }
     
     var body: some View {
         NavigationStack {
@@ -51,7 +56,8 @@ struct CitySearchView: View {
     private func cityList(_ cities: [City]) -> some View {
         List(cities) { city in
             NavigationLink {
-                ActivityRecommendationsView(city: city)
+                ActivityRecommendationsView(city: city, weatherRepository: weatherRepository, recommendationsUseCase: recommendationsUseCase)
+                
             } label: {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(city.name)

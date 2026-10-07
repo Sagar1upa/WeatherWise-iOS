@@ -29,6 +29,16 @@
 		F27E66B330768C6C00BC33C0 /* WeatherWiseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherWiseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F27E67443076C5E800BC33C0 /* Exceptions for "WeatherWiseTests" folder in "WeatherWiseTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Presentation/CitySearchViewModelTests.swift,
+			);
+			target = F27E66A830768C6C00BC33C0 /* WeatherWiseTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F27E669E30768C6A00BC33C0 /* WeatherWise */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -37,6 +47,9 @@
 		};
 		F27E66AC30768C6C00BC33C0 /* WeatherWiseTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F27E67443076C5E800BC33C0 /* Exceptions for "WeatherWiseTests" folder in "WeatherWiseTests" target */,
+			);
 			path = WeatherWiseTests;
 			sourceTree = "<group>";
 		};

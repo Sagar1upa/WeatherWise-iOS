@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherForecast: Equatable, Sendable {
+struct WeatherForecast: Codable, Equatable, Sendable {
     let latitude: Double
     let longitude: Double
     let timezone: String

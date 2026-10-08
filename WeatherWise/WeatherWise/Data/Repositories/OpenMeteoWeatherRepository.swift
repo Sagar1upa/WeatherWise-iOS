@@ -9,23 +9,34 @@ import Foundation
 
 struct OpenMeteoWeatherRepository: WeatherRepository {
     private let apiClient: any APIClient
+    private let cache: any WeatherCache
     
-    init(apiClient: any APIClient) {
+    init(apiClient: any APIClient, cache: any WeatherCache) {
         self.apiClient = apiClient
+        self.cache = cache
     }
     
     func fetchForecast(latitude: Double, longitude: Double) async throws -> WeatherForecast {
         
         let endpoint = APIEndpoint.forecast(latitude: latitude, longitude: longitude)
         
-        let response: ForecastResponseDTO = try await apiClient.request(endpoint)
-        
-        return try mapToDomain(response)
+        do {
+            let response: ForecastResponseDTO = try await apiClient.request(endpoint)
+            let forecast = try mapToDomain(response)
+            cache.save(forecast, latitude: latitude, longitude: longitude)
+            return forecast
+            
+        } catch {
+            if let cachedForecast = cache.load(latitude: latitude, longitude: longitude) {
+                return cachedForecast
+            }
+
+            throw error
+        }
     }
     
     private func mapToDomain(_ response: ForecastResponseDTO) throws -> WeatherForecast {
         let daily = response.daily
-        
         let count = daily.time.count
         
         guard

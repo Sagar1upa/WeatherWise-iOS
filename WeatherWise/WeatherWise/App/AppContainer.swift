@@ -24,7 +24,7 @@ final class AppContainer {
         let locationRepository = OpenMeteoLocationRepository(apiClient: apiClient)
         
         self.locationRepository = locationRepository
-        self.weatherRepository = OpenMeteoWeatherRepository(apiClient: apiClient)
+        self.weatherRepository = OpenMeteoWeatherRepository(apiClient: apiClient, cache: UserDefaultsWeatherCache())
         self.searchCitiesUseCase = DefaultSearchCitiesUseCase(repository: locationRepository)
         
         self.activityRecommendationsUseCase = DefaultGetActivityRecommendationsUseCase()

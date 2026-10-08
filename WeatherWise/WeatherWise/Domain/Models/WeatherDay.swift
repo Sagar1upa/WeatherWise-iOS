@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherDay: Identifiable, Equatable, Sendable {
+struct WeatherDay: Codable, Identifiable, Equatable, Sendable {
     let id: String
     let date: Date
     let weatherCode: Int

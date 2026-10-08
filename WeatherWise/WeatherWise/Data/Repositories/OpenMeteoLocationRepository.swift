@@ -16,12 +16,12 @@ struct OpenMeteoLocationRepository: LocationRepository {
     
     func searchCities(query: String) async throws -> [City] {
         
-        let endpoint = APIEndpoint.geocoding(query: query, count: 10)
+        let endpoint = APIEndpoint.geocoding(query: query)
         
         let response: GeocodingResponseDTO = try await apiClient.request(endpoint)
         
         return response.results?.map { result in
-            City(id: result.id, name: result.name, country: result.country, latitude: result.latitude, longitude: result.longitude, timezone: result.timezone)
+            City(id: result.id, name: result.name, country: result.country ?? "No Country", latitude: result.latitude, longitude: result.longitude, timezone: result.timezone)
         } ?? []
     }
 }

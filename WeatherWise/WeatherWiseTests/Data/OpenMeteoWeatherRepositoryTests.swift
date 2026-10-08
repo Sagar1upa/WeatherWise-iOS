@@ -15,7 +15,8 @@ struct OpenMeteoWeatherRepositoryTests {
     func fetchForecastMapsDTOToDomainModel() async throws {
         let apiClient = MockAPIClient()
         apiClient.response = makeForecastResponse()
-        let sut = OpenMeteoWeatherRepository(apiClient: apiClient)
+        let cache = MockWeatherCache()
+        let sut = OpenMeteoWeatherRepository(apiClient: apiClient, cache: cache)
         
         let result = try await sut.fetchForecast(latitude: 51.5074, longitude: -0.1278)
         
@@ -41,11 +42,12 @@ struct OpenMeteoWeatherRepositoryTests {
     @Test
     func fetchForecastThrowsForMismatchedArrayLengths() async {
         let apiClient = MockAPIClient()
+        let cache = MockWeatherCache()
         
         apiClient.response = ForecastResponseDTO(latitude: 51.5074, longitude: -0.1278, timezone: "Europe/London", daily: DailyForecastDTO(time: ["2026-10-07", "2026-10-08"], weatherCode: [1], temperatureMax: [22, 20], temperatureMin: [14, 12], precipitationProbabilityMax: [10, 20], precipitationSum: [0, 1], snowfallSum: [0, 0], windSpeedMax: [15, 20], sunshineDuration: [25_000, 20_000], uvIndexMax: [5, 4])
         )
         
-        let sut = OpenMeteoWeatherRepository(apiClient: apiClient)
+        let sut = OpenMeteoWeatherRepository(apiClient: apiClient, cache: cache)
         
         await #expect(throws: APIError.decodingFailed) {
             try await sut.fetchForecast(latitude: 51.5074, longitude: -0.1278)
@@ -56,8 +58,9 @@ struct OpenMeteoWeatherRepositoryTests {
     func fetchForecastPropagatesAPIError() async {
         let apiClient = MockAPIClient()
         apiClient.error = APIError.networkUnavailable
+        let cache = MockWeatherCache()
         
-        let sut = OpenMeteoWeatherRepository(apiClient: apiClient)
+        let sut = OpenMeteoWeatherRepository(apiClient: apiClient, cache: cache)
         
         await #expect(throws: APIError.networkUnavailable) {
             try await sut.fetchForecast(latitude: 51.5074, longitude: -0.1278)

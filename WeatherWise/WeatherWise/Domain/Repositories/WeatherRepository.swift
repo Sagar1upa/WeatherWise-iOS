@@ -8,8 +8,5 @@
 import Foundation
 
 protocol WeatherRepository: Sendable {
-    func fetchForecast(
-        latitude: Double,
-        longitude: Double
-    ) async throws -> WeatherForecast
+    func fetchForecast(latitude: Double, longitude: Double) async throws -> WeatherForecast
 }

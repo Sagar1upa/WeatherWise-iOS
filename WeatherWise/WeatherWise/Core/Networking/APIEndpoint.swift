@@ -8,20 +8,19 @@
 import Foundation
 
 enum APIEndpoint: Sendable {
-    case geocoding(query: String, count: Int)
+    case geocoding(query: String)
     
     case forecast(latitude: Double, longitude: Double)
     
     var url: URL? {
         switch self {
-        case let .geocoding(query, count):
+        case let .geocoding(query):
             var components = URLComponents()
             components.scheme = "https"
             components.host = "geocoding-api.open-meteo.com"
             components.path = "/v1/search"
             components.queryItems = [
                 URLQueryItem(name: "name", value: query),
-                URLQueryItem(name: "count", value: String(count)),
                 URLQueryItem(name: "language", value: "en"),
                 URLQueryItem(name: "format", value: "json")
             ]
